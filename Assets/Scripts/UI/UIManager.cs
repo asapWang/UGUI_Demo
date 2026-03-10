@@ -4,7 +4,7 @@ public class UIManager: MonoBehaviour
 {
     //单例模式
     public static UIManager Instance { get; private set; }
-    [SerializeField] private Transform canvasTransform;
+    [SerializeField]private Transform canvasTransform;
     private Dictionary<string, BasePanel> panelDic = new Dictionary<string, BasePanel>();
     private void Awake()
     {
@@ -13,6 +13,7 @@ public class UIManager: MonoBehaviour
         else
             Destroy(this.gameObject);
     }
+
     //创建面板
     //约束泛型T必须是BasePanel的子类，后面代码中可以直接使用BasePanel的属性和方法,但是BasePanel不能直接当做T来使用
     public T NewPanel<T>() where T : BasePanel{
