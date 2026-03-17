@@ -7,4 +7,5 @@ public class LoginData
     public bool autoLogin;
     public bool rememberPW;
     //服务器相关
+    public int serverID=-1;
 }

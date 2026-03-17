@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,11 +24,20 @@ public class LoginPanel : BasePanel
                 loginData.rememberPW = rememberPWToggle.isOn;
                 loginData.autoLogin = autoLoginToggle.isOn;
                 LoginMgr.Instance.SaveLoginData();
-                //提示登录成功
-                TipPanel tipPanel = UIManager.Instance.NewPanel<TipPanel>();
-                tipPanel.SetInfo("登录成功");
-                //销毁当前面板，进入服务器面板
-                UIManager.Instance.DestroyPanel<LoginPanel>();
+                
+                //销毁当前面板，判断进入服务器面板还是第一次选服
+                if (loginData.serverID == -1)
+                {
+                    //第一次选服
+                    UIManager.Instance.DestroyPanel<LoginPanel>();
+                    
+                }
+                else
+                {
+                    //进入服务器面板
+                    UIManager.Instance.DestroyPanel<LoginPanel>();
+                    UIManager.Instance.NewPanel<ServerPanel>();
+                }
             }
             else
             {
