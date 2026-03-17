@@ -14,13 +14,37 @@ public class LoginPanel : BasePanel
         //点击确定，验证输入的账号密码是否正确
         confirmBtn.onClick.AddListener(() =>
         {
-            
+            if(LoginMgr.Instance.CheckInfo(idInput.text, passwordInput.text))
+            {
+                //登录成功，保存登录数据
+                LoginData loginData = LoginMgr.Instance.LoginData;
+                loginData.id = idInput.text;
+                loginData.password = passwordInput.text;
+                loginData.rememberPW = rememberPWToggle.isOn;
+                loginData.autoLogin = autoLoginToggle.isOn;
+                LoginMgr.Instance.SaveLoginData();
+                //提示登录成功
+                TipPanel tipPanel = UIManager.Instance.NewPanel<TipPanel>();
+                tipPanel.SetInfo("登录成功");
+                //销毁当前面板，进入服务器面板
+                UIManager.Instance.DestroyPanel<LoginPanel>();
+            }
+            else
+            {
+                //提示账号或密码错误
+                TipPanel tipPanel = UIManager.Instance.NewPanel<TipPanel>();
+                tipPanel.SetInfo("账号或密码错误");
+                //清空密码输入框
+                idInput.text = "";
+                passwordInput.text = "";
+            }
         });
         //点击注册，销毁当前面板，打开注册面板
         registerBtn.onClick.AddListener(() =>
         {
             UIManager.Instance.DestroyPanel<LoginPanel>();
             //展示注册面板
+            UIManager.Instance.NewPanel<RegisterPanel>();
         });
 
         //取消记住密码就取消自动登录
@@ -55,8 +79,17 @@ public class LoginPanel : BasePanel
         }
         if(loginData.autoLogin)
         {
-            //自动登录
+            //自动登录，销毁当前面板
+            TipPanel tipPanel = UIManager.Instance.NewPanel<TipPanel>();
+            tipPanel.SetInfo("自动登录成功");
+            //UIManager.Instance.DestroyPanel<LoginPanel>();
+            //进入服务器面板
 
         }
+    }
+    public void SetAccountInfo(string id, string password)
+    {
+        idInput.text = id;
+        passwordInput.text = password;
     }
 }
