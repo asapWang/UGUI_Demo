@@ -23,6 +23,7 @@ public class LoginPanel : BasePanel
                 loginData.password = passwordInput.text;
                 loginData.rememberPW = rememberPWToggle.isOn;
                 loginData.autoLogin = autoLoginToggle.isOn;
+                //除了服务器id，其他登录数据都在这里保存了
                 LoginMgr.Instance.SaveLoginData();
                 
                 //销毁当前面板，判断进入服务器面板还是第一次选服
@@ -30,6 +31,7 @@ public class LoginPanel : BasePanel
                 {
                     //第一次选服
                     UIManager.Instance.DestroyPanel<LoginPanel>();
+                    UIManager.Instance.NewPanel<ChooseServerPanel>();
                     
                 }
                 else
@@ -90,11 +92,23 @@ public class LoginPanel : BasePanel
         if(loginData.autoLogin)
         {
             //自动登录，销毁当前面板
-            TipPanel tipPanel = UIManager.Instance.NewPanel<TipPanel>();
-            tipPanel.SetInfo("自动登录成功");
-            //UIManager.Instance.DestroyPanel<LoginPanel>();
+            //取消渐变动画，直接销毁面板更自然
+            UIManager.Instance.DestroyPanel<LoginPanel>(false);
             //进入服务器面板
-
+            if (loginData.serverID == -1)
+            {
+                //第一次选服
+                UIManager.Instance.NewPanel<ChooseServerPanel>();
+                TipPanel tipPanel = UIManager.Instance.NewPanel<TipPanel>();
+                tipPanel.SetInfo("自动登录成功");
+            }
+            else
+            {
+                //进入服务器面板
+                UIManager.Instance.NewPanel<ServerPanel>();
+                TipPanel tipPanel = UIManager.Instance.NewPanel<TipPanel>();
+                tipPanel.SetInfo("自动登录成功");
+            }
         }
     }
     public void SetAccountInfo(string id, string password)

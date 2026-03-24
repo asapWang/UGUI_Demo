@@ -31,6 +31,8 @@ public class RegisterPanel : BasePanel
             //调用LoginMgr的注册方法，注册成功则返回登录界面，否则提示账号已存在
             if (LoginMgr.Instance.RegisterUser(idInput.text, passwordInput.text))
             {
+                //清除原登录数据
+                LoginMgr.Instance.ClearLoginData();
                 //返回登录界面,将账号密码传回登录界面
                 LoginPanel loginPanel = UIManager.Instance.NewPanel<LoginPanel>();
                 loginPanel.SetAccountInfo(idInput.text, passwordInput.text);

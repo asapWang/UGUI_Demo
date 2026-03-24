@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LoginMgr
@@ -8,10 +9,13 @@ public class LoginMgr
     public LoginData LoginData => loginData;
     private RegisterData registerData;
     public RegisterData RegisterData => registerData;
+    private List<ServerInfo> serverData;
+    public List<ServerInfo> ServerData => serverData;
     private LoginMgr()
     {
         loginData = JsonMgr.Instance.LoadData<LoginData>("LoginData");
         registerData = JsonMgr.Instance.LoadData<RegisterData>("RegisterData");
+        serverData = JsonMgr.Instance.LoadData<List<ServerInfo>>("ServerInfo");
     }
 
     public void SaveLoginData()
@@ -34,6 +38,13 @@ public class LoginMgr
         registerData.accountDic.Add(id, password);
         SaveRegisterData();
         return true;
+    }
+    //清除登录数据
+    public void ClearLoginData()
+    {
+        loginData.rememberPW = false;
+        loginData.autoLogin = false;
+        loginData.serverID = -1;
     }
     //验证账号密码是否正确
     public bool CheckInfo(string id,string password)

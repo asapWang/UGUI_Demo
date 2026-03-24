@@ -12,6 +12,8 @@ public class UIManager
     private UIManager()
     {
         canvasTransform = GameObject.Find("Canvas").transform;
+        //换场景时不会销毁
+        GameObject.DontDestroyOnLoad(canvasTransform.gameObject);
     }
    
 
